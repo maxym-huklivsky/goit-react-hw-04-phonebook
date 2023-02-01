@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 
 const schema = yup.object().shape({
   name: yup.string().trim().min(4).max(24).required(),
-  number: yup.string().trim().length(13).required(),
+  number: yup.string().trim().min(6).max(13).required(),
 });
 
 export const ContactForm = ({ onAddContact }) => {
