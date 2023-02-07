@@ -1,25 +1,14 @@
 import { nanoid } from 'nanoid';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useLocalStorage } from 'hooks/useLocalStorage';
 import { Container } from './App.styled';
 import { ContactsList } from 'components/ContactsList';
 import { ContactForm } from 'components/ContactForm';
 import { FilterContacts } from 'components/FilterContacts';
 
 export const App = () => {
-  const [contacts, setContacts] = useState(() => {
-    const saveContacts = JSON.parse(localStorage.getItem('contacts'));
-
-    if (saveContacts) {
-      return saveContacts;
-    } else {
-      return [];
-    }
-  });
+  const [contacts, setContacts] = useLocalStorage('contacts', []);
   const [filter, setFilter] = useState('');
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
 
   const addContact = (values, actions) => {
     const { name, number } = values;
@@ -45,7 +34,6 @@ export const App = () => {
       return alert(`${number}(${thisNameOfContact}) is already in contacts.`);
     }
 
-    // це відбудеться якщо всі перевірки пройшли
     setContacts(pS => [{ name, number, id: nanoid() }, ...pS]);
 
     actions.resetForm();
